@@ -7,8 +7,10 @@
   <title>Atelier Heritage &amp; Craft | VELORA</title>
   
   <!-- Favicon & Stylesheet -->
-  <link rel="icon" type="image/svg+xml" href="../images/logo.svg" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -17,7 +19,7 @@
     <span>Complimentary Worldwide Express Delivery on orders over $250 • Use code <strong>VELORA15</strong> for 15% off</span>
   </aside>
 
-  <!-- Main Navigation Header -->
+  <!-- Main Navigation Header (FR-01, FR-07) -->
   <header class="main-header">
     <div class="container navbar">
       <!-- Mobile Hamburger Button -->
@@ -33,6 +35,9 @@
         <a href="shop.html" class="nav-link">Collections</a>
         <a href="about.html" class="nav-link active">Atelier Story</a>
         <a href="contact.html" class="nav-link">Client Concierge</a>
+        <a href="home.html" class="nav-link">Patron Portal</a>
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="register.html" class="nav-link">Register</a>
       </nav>
 
       <!-- Brand Logo -->
@@ -41,8 +46,26 @@
         <span class="logo-sub">Haute Couture</span>
       </a>
 
-      <!-- Action Icons (Search, Wishlist, Cart) -->
+      <!-- Action Icons (Theme Toggle, Search, Wishlist, Cart) -->
       <div class="nav-actions">
+        <!-- Theme Toggle Button (FR-07) -->
+        <button class="nav-icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
         <!-- Search Button -->
         <button class="nav-icon-btn" id="searchTriggerBtn" title="Search Creations" aria-label="Search">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -76,13 +99,17 @@
   <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
     <div class="mobile-nav-header">
       <span class="logo-text" style="font-size:1.4rem;">VELORA</span>
-      <button id="closeMobileNav" style="font-size:1.8rem; line-height:1;">&times;</button>
+      <button id="closeMobileNav" style="font-size:1.8rem; line-height:1;" aria-label="Close Mobile Menu">&times;</button>
     </div>
     <div class="mobile-links">
       <a href="index.html" class="mobile-link">Home</a>
       <a href="shop.html" class="mobile-link">Collections</a>
-      <a href="about.html" class="mobile-link">Atelier Story</a>
+      <a href="about.html" class="mobile-link active">Atelier Story</a>
       <a href="contact.html" class="mobile-link">Client Concierge</a>
+      <a href="home.html" class="mobile-link">Patron Portal</a>
+      <a href="signin.html" class="mobile-link">Sign In</a>
+      <a href="signup.html" class="mobile-link">Sign Up</a>
+      <a href="register.html" class="mobile-link">Register Client</a>
     </div>
     <div style="margin-top:auto; padding-top:2rem; border-top:1px solid var(--color-border);">
       <small style="color:var(--color-text-muted); display:block; margin-bottom:0.8rem;">Private Client Desk: concierge@velora-couture.com</small>
@@ -129,7 +156,7 @@
   </section>
 
   <!-- Core Atelier Values -->
-  <section class="section-padding" style="background-color: var(--color-sand); border-top:1px solid var(--color-border); border-bottom:1px solid var(--color-border);">
+  <section class="section-padding" style="background-color: var(--color-surface); border-top:1px solid var(--color-border); border-bottom:1px solid var(--color-border);">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Sustainable Commitments</span>
@@ -207,7 +234,7 @@
       <span class="eyebrow" style="color:var(--color-gold);">Private Wardrobe Consultation</span>
       <h2>Experience Tailoring Made for You</h2>
       <p>Schedule a private styling appointment in our flagship salons or initiate a remote consultation with our senior tailoring concierge.</p>
-      <div style="display:flex; justify-content:center; gap:1rem;">
+      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
         <a href="contact.html" class="btn btn-gold">Contact Concierge</a>
         <a href="shop.html" class="btn btn-outline" style="border-color:#FFF; color:#FFF;">Explore Collections</a>
       </div>
@@ -218,23 +245,24 @@
   <footer class="main-footer">
     <div class="container footer-top-grid">
       <div class="footer-brand">
-        <h3>VELORA</h3>
-        <p>Haute Couture &amp; contemporary Prêt-à-Porter. Permanent garments sculpted for the discerning individual.</p>
+        <span class="logo-text">VELORA</span>
+        <span class="logo-sub">Haute Couture</span>
+        <p style="margin-top:0.8rem;">Haute Couture &amp; contemporary Prêt-à-Porter. Permanent garments sculpted for the discerning individual.</p>
         <div class="footer-socials">
-          <a href="#" class="social-link" aria-label="Instagram">IG</a>
-          <a href="#" class="social-link" aria-label="Pinterest">PI</a>
-          <a href="#" class="social-link" aria-label="LinkedIn">LI</a>
+          <a href="about.html" class="social-link" aria-label="Instagram">IG</a>
+          <a href="about.html" class="social-link" aria-label="Pinterest">PI</a>
+          <a href="about.html" class="social-link" aria-label="LinkedIn">LI</a>
         </div>
       </div>
 
       <div class="footer-column">
         <h5>Collections</h5>
         <div class="footer-links">
-          <a href="shop.html">Outerwear</a>
-          <a href="shop.html">Silk Dresses</a>
-          <a href="shop.html">Tailoring</a>
-          <a href="shop.html">Fine Knitwear</a>
-          <a href="shop.html">Handcrafted Leather</a>
+          <a href="shop.html?category=outerwear">Outerwear &amp; Coats</a>
+          <a href="shop.html?category=dresses">Silk Eveningwear</a>
+          <a href="shop.html?category=tailoring">Bespoke Tailoring</a>
+          <a href="shop.html?category=knitwear">Fine Cashmere</a>
+          <a href="shop.html?category=accessories">Handcrafted Leather</a>
         </div>
       </div>
 
@@ -243,7 +271,7 @@
         <div class="footer-links">
           <a href="about.html">Our Heritage</a>
           <a href="about.html">Sustainability Standards</a>
-          <a href="about.html">Master Artisans</a>
+          <a href="home.html">Patron Portal</a>
           <a href="contact.html">Flagship Boutiques</a>
         </div>
       </div>
@@ -251,20 +279,20 @@
       <div class="footer-column">
         <h5>Concierge</h5>
         <div class="footer-links">
-          <a href="contact.html">Client Care</a>
+          <a href="signin.html">Sign In</a>
+          <a href="register.html">Client Enrollment</a>
           <a href="contact.html">Private Styling</a>
           <a href="contact.html">Shipping &amp; Logistics</a>
-          <a href="contact.html">Returns &amp; Exchanges</a>
         </div>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>&copy; 2026 VELORA Couture Inc. All rights reserved.</p>
+      <p>&copy; 2026 VELORA Couture Inc. All rights reserved. Academic Coursework Project (25CS208).</p>
       <div class="footer-bottom-links">
-        <a href="#">Privacy Manifesto</a>
-        <a href="#">Terms of Acquisition</a>
-        <a href="#">Atelier Security</a>
+        <a href="about.html">Privacy Manifesto</a>
+        <a href="about.html">Terms of Acquisition</a>
+        <a href="contact.html">Atelier Security</a>
       </div>
     </div>
   </footer>
@@ -294,7 +322,7 @@
 
     <div class="drawer-footer" id="cartDrawerFooter">
       <form class="cart-coupon-form" id="cartCouponForm">
-        <input type="text" id="couponInput" placeholder="Privilege Code (e.g. VELORA15)" />
+        <input type="text" id="couponInput" placeholder="Privilege Code (e.g. VELORA15)" aria-label="Privilege code" />
         <button type="submit">Apply</button>
       </form>
 
@@ -317,7 +345,7 @@
         <span id="cartTotalDisplay">$0</span>
       </div>
 
-      <button class="btn btn-dark btn-block" id="proceedToCheckoutBtn">Proceed to Checkout</button>
+      <button class="btn btn-dark btn-block" id="proceedToCheckoutBtn" onclick="VeloraCart.openCheckoutModal()">Proceed to Checkout</button>
     </div>
   </aside>
 
@@ -331,60 +359,60 @@
   </aside>
 
   <!-- Global Quick View Modal -->
-  <div class="modal-backdrop" id="quickViewModal">
+  <div class="modal-backdrop" id="quickViewModal" role="dialog" aria-modal="true" aria-label="Creation Quick View">
     <div class="modal-dialog" id="quickViewDialog"></div>
   </div>
 
   <!-- Global Search Modal -->
-  <div class="search-modal-overlay" id="searchModal">
+  <div class="search-modal-overlay" id="searchModal" role="dialog" aria-modal="true" aria-label="Search Catalog">
     <div class="search-modal-box">
       <div class="search-input-header">
-        <input type="text" id="globalSearchInput" placeholder="Search creations by fabric, silhouette, or name..." autocomplete="off" />
-        <button id="closeSearchModal" style="color:#FFF; font-size:2rem; line-height:1; margin-left:1rem;">&times;</button>
+        <input type="text" id="globalSearchInput" placeholder="Search creations by fabric, silhouette, or name..." autocomplete="off" aria-label="Search creations" />
+        <button id="closeSearchModal" style="color:#FFF; font-size:2rem; line-height:1; margin-left:1rem;" aria-label="Close Search">&times;</button>
       </div>
       <div class="search-results-tray" id="searchResultsTray"></div>
     </div>
   </div>
 
-  <!-- Checkout Demo Simulation Modal -->
-  <div class="modal-backdrop" id="checkoutModal">
+  <!-- Checkout Demo Simulation Modal (Separate form and success views) -->
+  <div class="modal-backdrop" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
     <div class="modal-dialog" style="max-width: 920px;" id="checkoutModalBody">
-      <button class="modal-close-btn" id="closeCheckoutModal">&times;</button>
-      <div class="checkout-modal-layout">
+      <button class="modal-close-btn" id="closeCheckoutModal" aria-label="Close Checkout">&times;</button>
+      <div class="checkout-modal-layout" id="checkoutFormView">
         <div class="checkout-form-panel">
           <span class="eyebrow">Atelier Dispatch</span>
-          <h2 style="font-size:1.6rem; margin-bottom:1.5rem;">Client &amp; Shipping Details</h2>
+          <h2 id="checkoutModalTitle" style="font-size:1.6rem; margin-bottom:1.5rem;">Client &amp; Shipping Details</h2>
           
           <form id="veloraCheckoutForm">
             <div class="form-group-row">
               <div class="form-group">
-                <label>First Name</label>
+                <label for="checkoutName">First Name</label>
                 <input type="text" id="checkoutName" required placeholder="Elena" value="Eleanor" />
               </div>
               <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" required placeholder="Vance" value="Vance" />
+                <label for="checkoutLastName">Last Name</label>
+                <input type="text" id="checkoutLastName" required placeholder="Vance" value="Vance" />
               </div>
             </div>
 
             <div class="form-group">
-              <label>Email for Dispatch Notice</label>
+              <label for="checkoutEmail">Email for Dispatch Notice</label>
               <input type="email" id="checkoutEmail" required placeholder="client@domain.com" value="eleanor.vance@couture.com" />
             </div>
 
             <div class="form-group">
-              <label>Delivery Address</label>
-              <input type="text" required placeholder="Avenue Montaigne, 75008" value="742 Evergreen Terrace, Suite 400" />
+              <label for="checkoutAddress">Delivery Address</label>
+              <input type="text" id="checkoutAddress" required placeholder="Avenue Montaigne, 75008" value="742 Evergreen Terrace, Suite 400" />
             </div>
 
             <div class="form-group-row">
               <div class="form-group">
-                <label>City</label>
-                <input type="text" required value="New York" />
+                <label for="checkoutCity">City</label>
+                <input type="text" id="checkoutCity" required value="New York" />
               </div>
               <div class="form-group">
-                <label>Country / Region</label>
-                <select required>
+                <label for="checkoutCountry">Country / Region</label>
+                <select id="checkoutCountry" required>
                   <option value="US">United States</option>
                   <option value="FR">France</option>
                   <option value="IT">Italy</option>
@@ -395,8 +423,8 @@
             </div>
 
             <div class="form-group">
-              <label>Payment Method (Demo Simulation)</label>
-              <select>
+              <label for="checkoutPayment">Payment Method (Demo Simulation)</label>
+              <select id="checkoutPayment">
                 <option>White-Glove Amex Black / Concierge Billing</option>
                 <option>Visa / Mastercard Premium</option>
                 <option>Apple Pay / Digital Wallet</option>
@@ -413,6 +441,8 @@
           <div id="checkoutSummaryTotals"></div>
         </div>
       </div>
+
+      <div id="checkoutSuccessView" style="display:none;"></div>
     </div>
   </div>
 
@@ -420,9 +450,9 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- Scripts (Vanilla JavaScript) -->
-  <script src="../js/products.js"></script>
-  <script src="../js/cart.js"></script>
-  <script src="../js/chatbot.js"></script>
-  <script src="../js/script.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
