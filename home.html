@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VELORA Patron Portal - Private client dashboard, acquisition stats, wishlist overview, and atelier calculator." />
+  <title>Patron Portal | VELORA Haute Couture</title>
+  
+  <!-- Favicon & Stylesheets -->
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <script src="js/theme.js"></script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <aside class="announcement-bar" role="region" aria-label="Announcement">
+    <span>Private Patron Portal • Academic IA-3 Two-Layout Responsive Architecture</span>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="container navbar">
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Collections</a>
+        <a href="about.html" class="nav-link">Atelier Story</a>
+        <a href="contact.html" class="nav-link">Client Concierge</a>
+        <a href="home.html" class="nav-link active">Patron Portal</a>
+        <a href="signin.html" class="nav-link">Sign In</a>
+        <a href="register.html" class="nav-link">Register</a>
+      </nav>
+
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo" aria-label="VELORA Home">
+        <span class="logo-text">VELORA</span>
+        <span class="logo-sub">Haute Couture</span>
+      </a>
+
+      <!-- Action Icons (Theme Toggle, Search, Wishlist, Cart) -->
+      <div class="nav-actions">
+        <!-- Theme Toggle Button -->
+        <button class="nav-icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Search Button -->
+        <button class="nav-icon-btn" id="searchTriggerBtn" title="Search Creations" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button class="nav-icon-btn" id="wishlistTriggerBtn" title="Saved Wishlist" aria-label="Wishlist" onclick="VeloraWishlist.openWishlistDrawer()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <span class="badge-count" id="wishlistCountBadge" style="display:none;">0</span>
+        </button>
+
+        <!-- Shopping Cart Button -->
+        <button class="nav-icon-btn" id="cartTriggerBtn" title="Shopping Bag" aria-label="Shopping Bag" onclick="VeloraCart.openCartDrawer()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="badge-count" id="cartCountBadge" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+    <div class="mobile-nav-header">
+      <span class="logo-text" style="font-size:1.4rem;">VELORA</span>
+      <button id="closeMobileNav" style="font-size:1.8rem; line-height:1;" aria-label="Close Mobile Menu">&times;</button>
+    </div>
+    <div class="mobile-links">
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="shop.html" class="mobile-link">Collections</a>
+      <a href="about.html" class="mobile-link">Atelier Story</a>
+      <a href="contact.html" class="mobile-link">Client Concierge</a>
+      <a href="home.html" class="mobile-link active">Patron Portal</a>
+      <a href="signin.html" class="mobile-link">Sign In</a>
+      <a href="signup.html" class="mobile-link">Sign Up</a>
+      <a href="register.html" class="mobile-link">Register Client</a>
+    </div>
+    <div style="margin-top:auto; padding-top:2rem; border-top:1px solid var(--color-border);">
+      <small style="color:var(--color-text-muted); display:block; margin-bottom:0.8rem;">Private Client Desk: concierge@velora-couture.com</small>
+      <button class="btn btn-dark btn-block btn-sm" onclick="window.VeloraChatbot.open()">Chat with Stylist</button>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard Wrapper (FR-05: Desktop 250px 1fr 300px Grid | Mobile Flex Column) -->
+  <main class="dashboard-wrapper">
+    <div class="container">
+      
+      <div class="dashboard-grid-layout">
+        
+        <!-- Left Column: Navigation Sidebar & Patron Profile -->
+        <aside class="dashboard-sidebar" aria-label="Patron Profile & Navigation">
+          <!-- User Profile Summary Card -->
+          <div class="user-profile-summary">
+            <div class="profile-avatar" id="dashAvatar">P</div>
+            <div class="profile-info">
+              <h4 id="dashUserName">Guest Patron</h4>
+              <span id="dashUserDept">Maison Visitor</span>
+            </div>
+          </div>
+
+          <!-- Session Controls / Demo Notice -->
+          <div id="sessionActionBlock" style="margin-bottom:1.5rem; font-size:0.8rem;">
+            <!-- Dynamically populated: Sign in link or Sign out button -->
+          </div>
+
+          <!-- Sidebar Dashboard Navigation -->
+          <nav class="dash-nav" aria-label="Dashboard Menu">
+            <a href="home.html" class="dash-nav-item active">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>Atelier Overview</span>
+            </a>
+            <a href="shop.html" class="dash-nav-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+              </svg>
+              <span>Explore Salon</span>
+            </a>
+            <button class="dash-nav-item" style="width:100%; text-align:left; background:none; border:none; cursor:pointer;" onclick="VeloraWishlist.openWishlistDrawer()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span>Saved Wishlist</span>
+            </button>
+            <button class="dash-nav-item" style="width:100%; text-align:left; background:none; border:none; cursor:pointer;" onclick="VeloraCart.openCartDrawer()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              <span>Shopping Bag</span>
+            </button>
+            <a href="contact.html" class="dash-nav-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Private Stylist</span>
+            </a>
+          </nav>
+        </aside>
+
+        <!-- Centre Column: Main Dashboard Content -->
+        <section class="dashboard-main-col" aria-label="Dashboard Overview">
+          <!-- Welcome Banner -->
+          <div style="margin-bottom:1.8rem;">
+            <span class="eyebrow">College IA-3 Requirement (FR-05)</span>
+            <h1 style="font-size:2rem; margin-top:0.3rem;" id="dashWelcomeHeading">Welcome to the Maison VELORA Portal</h1>
+            <p style="color:var(--color-text-muted); font-size:0.9rem;">
+              Review your live acquisitions, wishlist selections, and exclusive seasonal creations.
+            </p>
+          </div>
+
+          <!-- Guest Prompt Banner (Displayed when not signed in so page can always be demoed) -->
+          <div class="guest-callout-banner" id="guestCalloutBanner">
+            <div>
+              <strong style="display:block; margin-bottom:0.25rem;">Demo Evaluation Mode (Guest Access)</strong>
+              <p>You are viewing the patron dashboard without an authenticated session. You may browse all features freely, or sign in to verify session persistence.</p>
+            </div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <a href="signin.html" class="btn btn-dark btn-sm">Sign In</a>
+              <a href="register.html" class="btn btn-outline btn-sm">Register</a>
+            </div>
+          </div>
+
+          <!-- Stat Cards Grid (Cart Items, Wishlist Items, Orders/Tier) -->
+          <div class="stat-cards-grid">
+            <!-- Cart Stat Card -->
+            <div class="stat-card">
+              <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <h5 id="statCartCount">0</h5>
+                <span>Bag Items</span>
+              </div>
+            </div>
+
+            <!-- Wishlist Stat Card -->
+            <div class="stat-card">
+              <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <h5 id="statWishlistCount">0</h5>
+                <span>Saved Wishlist</span>
+              </div>
+            </div>
+
+            <!-- Atelier Patron Tier Stat Card -->
+            <div class="stat-card">
+              <div class="stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <h5 id="statTierName">Privé</h5>
+                <span>Client Status</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Atelier Creations Preview -->
+          <div style="margin-top:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.2rem;">
+              <div>
+                <span class="eyebrow">Bespoke Curation</span>
+                <h3 style="font-size:1.4rem;">Featured Haute Couture</h3>
+              </div>
+              <a href="shop.html" class="btn btn-outline btn-sm">View All Collections &rarr;</a>
+            </div>
+
+            <div class="product-grid" id="dashboardFeaturedGrid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1.2rem;">
+              <!-- Populated dynamically by script from products.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Column: Tools Panel & Safe Client Calculator (FR-08) -->
+        <aside class="dashboard-tools-col" aria-label="Atelier Tools & Calculator">
+          
+          <!-- Safe Client Calculator Widget (FR-08) -->
+          <div class="calculator-widget" id="calculatorWidget">
+            <div class="calc-header">
+              <h4>Atelier Calculator</h4>
+              <span style="font-size:0.7rem; color:var(--color-gold); font-family:var(--font-mono); letter-spacing:0.05em;">SAFE ES6+</span>
+            </div>
+
+            <!-- Display -->
+            <div class="calc-display" id="calcDisplay" aria-live="polite">0</div>
+
+            <!-- Keypad Grid (Digits 0-9, Operators + - * /, Clear C, Equals =) -->
+            <div class="calc-grid">
+              <!-- Row 1 -->
+              <button type="button" class="calc-btn clear-btn" data-val="C" title="Clear Expression">C</button>
+              <button type="button" class="calc-btn op-btn" data-val="/" title="Divide">&divide;</button>
+              <button type="button" class="calc-btn op-btn" data-val="*" title="Multiply">&times;</button>
+              <button type="button" class="calc-btn op-btn" data-val="-" title="Subtract">&minus;</button>
+
+              <!-- Row 2 -->
+              <button type="button" class="calc-btn" data-val="7">7</button>
+              <button type="button" class="calc-btn" data-val="8">8</button>
+              <button type="button" class="calc-btn" data-val="9">9</button>
+              <button type="button" class="calc-btn op-btn" data-val="+" title="Add">+</button>
+
+              <!-- Row 3 -->
+              <button type="button" class="calc-btn" data-val="4">4</button>
+              <button type="button" class="calc-btn" data-val="5">5</button>
+              <button type="button" class="calc-btn" data-val="6">6</button>
+              <button type="button" class="calc-btn" data-val=".">.</button>
+
+              <!-- Row 4 -->
+              <button type="button" class="calc-btn" data-val="1">1</button>
+              <button type="button" class="calc-btn" data-val="2">2</button>
+              <button type="button" class="calc-btn" data-val="3">3</button>
+              <button type="button" class="calc-btn" data-val="0">0</button>
+
+              <!-- Row 5 (Equals spanning full width or 4 columns) -->
+              <button type="button" class="calc-btn equals-btn" data-val="=" style="grid-column: span 4; font-size:1.2rem;" title="Compute">=</button>
+            </div>
+            
+            <small style="display:block; margin-top:0.8rem; font-size:0.7rem; color:var(--color-text-muted); text-align:center;">
+              Keyboard inputs active (0-9, +, -, *, /, Enter, Backspace, C).
+            </small>
+          </div>
+
+          <!-- Atelier Salon Privileges Card -->
+          <div style="background:var(--color-surface-card); border:1px solid var(--color-border); padding:1.4rem;">
+            <h4 style="font-size:0.95rem; margin-bottom:0.6rem; text-transform:uppercase; letter-spacing:0.05em;">Concierge Desk</h4>
+            <p style="font-size:0.8rem; color:var(--color-text-muted); line-height:1.5; margin-bottom:1rem;">
+              Need custom alterations or private fitting appointments at our Paris or New York salon?
+            </p>
+            <button class="btn btn-outline btn-block btn-sm" onclick="window.VeloraChatbot.open()">Launch Concierge Chat</button>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-col brand-col">
+        <span class="logo-text">VELORA</span>
+        <span class="logo-sub">Haute Couture &amp; Prêt-à-Porter</span>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted);">
+          Bespoke craftsmanship, ethical cashmere, and archival couture since 1984.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Salons</h4>
+        <a href="shop.html?category=outerwear" class="footer-link">Outerwear &amp; Coats</a>
+        <a href="shop.html?category=dresses" class="footer-link">Evening Gowns</a>
+        <a href="shop.html?category=knitwear" class="footer-link">Cashmere Knitwear</a>
+        <a href="shop.html?category=accessories" class="footer-link">Leather Accessories</a>
+      </div>
+      <div class="footer-col">
+        <h4>Atelier</h4>
+        <a href="about.html" class="footer-link">Heritage Story</a>
+        <a href="contact.html" class="footer-link">Private Consultation</a>
+        <a href="home.html" class="footer-link">Patron Dashboard</a>
+        <a href="register.html" class="footer-link">Client Enrollment</a>
+      </div>
+      <div class="footer-col">
+        <h4>Client Services</h4>
+        <a href="signin.html" class="footer-link">Sign In</a>
+        <a href="signup.html" class="footer-link">Instant Sign Up</a>
+        <a href="contact.html" class="footer-link">Concierge Desk</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <small>&copy; 2026 MAISON VELORA PARIS. ALL RIGHTS RESERVED. ACADEMIC COURSEWORK PROJECT (25CS208).</small>
+    </div>
+  </footer>
+
+  <!-- Drawer / Modal Elements (Cart & Wishlist) -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Bag">
+    <div class="drawer-header">
+      <h3>Shopping Bag (<span id="cartDrawerCount">0</span>)</h3>
+      <button class="drawer-close-btn" id="closeCartDrawer" aria-label="Close Shopping Bag">&times;</button>
+    </div>
+    <div class="cart-items-list" id="cartItemsList"></div>
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div class="cart-summary-line">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <button class="btn btn-dark btn-block" id="proceedToCheckoutBtn" onclick="VeloraCart.openCheckoutModal()">Proceed to Acquisition</button>
+    </div>
+  </aside>
+
+  <aside class="wishlist-drawer" id="wishlistDrawer" aria-label="Saved Wishlist">
+    <div class="drawer-header">
+      <h3>Saved Wishlist (<span id="wishlistDrawerCount">0</span>)</h3>
+      <button class="drawer-close-btn" id="closeWishlistDrawer" aria-label="Close Wishlist">&times;</button>
+    </div>
+    <div class="wishlist-items-list" id="wishlistItemsList"></div>
+  </aside>
+
+  <!-- Checkout Modal -->
+  <div class="modal-backdrop" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
+    <div class="modal-dialog" style="max-width: 920px;" id="checkoutModalBody">
+      <button class="modal-close-btn" id="closeCheckoutModal" aria-label="Close Checkout">&times;</button>
+      <div class="checkout-modal-layout" id="checkoutFormView">
+        <div class="checkout-form-panel">
+          <span class="eyebrow">Atelier Dispatch</span>
+          <h2 id="checkoutModalTitle" style="font-size:1.6rem; margin-bottom:1.5rem;">Client &amp; Shipping Details</h2>
+          <form id="veloraCheckoutForm">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="checkoutName" required placeholder="Elena" value="Eleanor" />
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" required placeholder="Vance" value="Vance" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email for Dispatch Notice</label>
+              <input type="email" id="checkoutEmail" required placeholder="client@domain.com" value="eleanor.vance@couture.com" />
+            </div>
+            <div class="form-group">
+              <label>Delivery Address</label>
+              <input type="text" required placeholder="Avenue Montaigne, 75008" value="742 Evergreen Terrace, Suite 400" />
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" required value="New York" />
+              </div>
+              <div class="form-group">
+                <label>Country / Region</label>
+                <select required>
+                  <option value="US">United States</option>
+                  <option value="FR">France</option>
+                  <option value="IT">Italy</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="JP">Japan</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-dark btn-block" style="margin-top:1.5rem;">Place Atelier Acquisition</button>
+          </form>
+        </div>
+        <div class="checkout-summary-panel">
+          <h3 style="font-size:1.2rem; margin-bottom:1.2rem;">Acquisition Summary</h3>
+          <div id="checkoutSummaryItems" style="max-height: 240px; overflow-y: auto; margin-bottom: 1.5rem;"></div>
+          <div id="checkoutSummaryTotals"></div>
+        </div>
+      </div>
+      <div id="checkoutSuccessView" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="modal-backdrop" id="searchModal" role="dialog" aria-modal="true" aria-label="Search Catalog">
+    <div class="search-modal-box">
+      <div class="search-input-header">
+        <input type="text" id="globalSearchInput" placeholder="Search creations by fabric, silhouette, or name..." autocomplete="off" />
+        <button id="closeSearchModal" style="color:#FFF; font-size:2rem; line-height:1; margin-left:1rem;" aria-label="Close Search">&times;</button>
+      </div>
+      <div class="search-results-tray" id="searchResultsTray"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts (Pure Vanilla JavaScript) -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- Dashboard Initialization Script -->
+  <script>
+    (function() {
+      // 1. Sync User Session Information
+      function syncDashboardUser() {
+        var session = window.VeloraAuth ? window.VeloraAuth.getActiveSession() : null;
+        var avatarEl = document.getElementById("dashAvatar");
+        var nameEl = document.getElementById("dashUserName");
+        var deptEl = document.getElementById("dashUserDept");
+        var headingEl = document.getElementById("dashWelcomeHeading");
+        var bannerEl = document.getElementById("guestCalloutBanner");
+        var actionBlock = document.getElementById("sessionActionBlock");
+
+        if (session && session.email) {
+          var initial = (session.fullName || session.email).charAt(0).toUpperCase();
+          if (avatarEl) avatarEl.textContent = initial;
+          if (nameEl) nameEl.textContent = session.fullName || session.email;
+          if (deptEl) deptEl.textContent = session.dept || "Paris Flagship";
+          if (headingEl) headingEl.textContent = "Welcome, " + (session.fullName || session.email);
+          if (bannerEl) bannerEl.style.display = "none";
+          if (actionBlock) {
+            actionBlock.innerHTML = '<span style="color:var(--color-success); font-weight:600;">● Active Session</span> • <a href="javascript:void(0)" id="logoutLink" style="color:var(--color-text-muted); text-decoration:underline;">Sign Out</a>';
+            var logoutLink = document.getElementById("logoutLink");
+            if (logoutLink) {
+              logoutLink.addEventListener("click", function() {
+                window.VeloraAuth.clearSession();
+                window.location.reload();
+              });
+            }
+          }
+        } else {
+          if (avatarEl) avatarEl.textContent = "G";
+          if (nameEl) nameEl.textContent = "Guest Patron";
+          if (deptEl) deptEl.textContent = "Maison Visitor";
+          if (headingEl) headingEl.textContent = "Welcome to the Maison VELORA Portal";
+          if (bannerEl) bannerEl.style.display = "flex";
+          if (actionBlock) {
+            actionBlock.innerHTML = '<span style="color:var(--color-text-muted);">Guest Mode</span> • <a href="signin.html" style="color:var(--color-gold); font-weight:600; text-decoration:underline;">Sign In to Account</a>';
+          }
+        }
+      }
+
+      // 2. Sync Stat Cards from localStorage
+      function syncDashboardStats() {
+        try {
+          var cartRaw = localStorage.getItem("velora_cart_items");
+          var cartItems = cartRaw ? JSON.parse(cartRaw) : [];
+          var totalCartCount = cartItems.reduce(function(sum, item) { return sum + (item.quantity || 1); }, 0);
+          var cartCountEl = document.getElementById("statCartCount");
+          if (cartCountEl) cartCountEl.textContent = totalCartCount;
+
+          var wishRaw = localStorage.getItem("velora_wishlist_items");
+          var wishItems = wishRaw ? JSON.parse(wishRaw) : [];
+          var wishCountEl = document.getElementById("statWishlistCount");
+          if (wishCountEl) wishCountEl.textContent = wishItems.length;
+        } catch(e) {
+          console.warn("Could not parse dashboard stats", e);
+        }
+      }
+
+      // 3. Render Curated Featured Products
+      function renderFeaturedGrid() {
+        var grid = document.getElementById("dashboardFeaturedGrid");
+        if (!grid || !window.VELORA_PRODUCTS) return;
+
+        var items = window.VELORA_PRODUCTS.slice(0, 3);
+        grid.innerHTML = items.map(function(prod) {
+          return '<article class="product-card" data-id="' + prod.id + '">' +
+            '<div class="product-image-box">' +
+              '<img src="' + prod.image + '" alt="' + prod.title + '" loading="lazy" />' +
+            '</div>' +
+            '<div class="product-card-body" style="padding:0.75rem 0.2rem;">' +
+              '<span class="category-tag">' + prod.category.toUpperCase() + '</span>' +
+              '<h4 style="font-size:0.95rem; margin:0.3rem 0;">' + prod.title + '</h4>' +
+              '<div class="product-price">$' + prod.price.toFixed(2) + '</div>' +
+            '</div>' +
+            '<button class="btn btn-dark btn-block btn-sm" onclick="VeloraCart.addItem(' + prod.id + ')" style="margin-top:auto;">Add to Bag</button>' +
+          '</article>';
+        }).join("");
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        syncDashboardUser();
+        syncDashboardStats();
+        renderFeaturedGrid();
+      });
+    })();
+  </script>
+</body>
+</html>
