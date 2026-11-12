@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VELORA - Haute Couture and contemporary luxury prêt-à-porter fashion house. Discover bespoke tailoring, fine silk, and ethical cashmere." />
+  <title>VELORA | Haute Couture & Prêt-à-Porter</title>
+  
+  <!-- Favicon & Stylesheet -->
+  <link rel="icon" type="image/svg+xml" href="../images/logo.svg" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <aside class="announcement-bar" role="region" aria-label="Announcement">
+    <span>Complimentary Worldwide Express Delivery on orders over $250 • Use code <strong>VELORA15</strong> for 15% off</span>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="container navbar">
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="shop.html" class="nav-link">Collections</a>
+        <a href="about.html" class="nav-link">Atelier Story</a>
+        <a href="contact.html" class="nav-link">Client Concierge</a>
+      </nav>
+
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo" aria-label="VELORA Home">
+        <span class="logo-text">VELORA</span>
+        <span class="logo-sub">Haute Couture</span>
+      </a>
+
+      <!-- Action Icons (Search, Wishlist, Cart) -->
+      <div class="nav-actions">
+        <!-- Search Button -->
+        <button class="nav-icon-btn" id="searchTriggerBtn" title="Search Creations" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button class="nav-icon-btn" id="wishlistTriggerBtn" title="Saved Wishlist" aria-label="Wishlist" onclick="VeloraWishlist.openWishlistDrawer()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <span class="badge-count" id="wishlistCountBadge" style="display:none;">0</span>
+        </button>
+
+        <!-- Shopping Cart Button -->
+        <button class="nav-icon-btn" id="cartTriggerBtn" title="Shopping Bag" aria-label="Shopping Bag" onclick="VeloraCart.openCartDrawer()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="badge-count" id="cartCountBadge" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+    <div class="mobile-nav-header">
+      <span class="logo-text" style="font-size:1.4rem;">VELORA</span>
+      <button id="closeMobileNav" style="font-size:1.8rem; line-height:1;">&times;</button>
+    </div>
+    <div class="mobile-links">
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="shop.html" class="mobile-link">Collections</a>
+      <a href="about.html" class="mobile-link">Atelier Story</a>
+      <a href="contact.html" class="mobile-link">Client Concierge</a>
+    </div>
+    <div style="margin-top:auto; padding-top:2rem; border-top:1px solid var(--color-border);">
+      <small style="color:var(--color-text-muted); display:block; margin-bottom:0.8rem;">Private Client Desk: concierge@velora-couture.com</small>
+      <button class="btn btn-dark btn-block btn-sm" onclick="window.VeloraChatbot.open()">Chat with Stylist</button>
+    </div>
+  </aside>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <img 
+      src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1800&auto=format&fit=crop" 
+      alt="VELORA Seasonal Editorial" 
+      class="hero-bg-media" 
+    />
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <span class="eyebrow" style="color: #E2CFB4;">Winter Solstice 2026 Collection</span>
+      <h1 class="hero-title">Timeless Architecture in <em>Slow Fashion</em></h1>
+      <p class="hero-subtitle">
+        Sculpted silhouettes handcrafted in Biella and Lyon from ethically harvested Mongolian cashmere, Grade 6A mulberry silk, and Italian fine wool.
+      </p>
+      <div class="hero-cta-group">
+        <a href="shop.html" class="btn btn-gold">Explore Collections</a>
+        <a href="about.html" class="btn btn-outline">Our Atelier Heritage</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Value Pillars Strip -->
+  <section class="brand-pillars">
+    <div class="container pillars-grid">
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </div>
+        <div class="pillar-text">
+          <h5>Complimentary Delivery</h5>
+          <p>Worldwide insured courier on orders over $250</p>
+        </div>
+      </div>
+
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+          </svg>
+        </div>
+        <div class="pillar-text">
+          <h5>Artisanal Craftsmanship</h5>
+          <p>Hand-finished by third-generation European master tailors</p>
+        </div>
+      </div>
+
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div class="pillar-text">
+          <h5>Ethical & Sustainable</h5>
+          <p>100% GOTS certified fibers and zero-waste tailoring</p>
+        </div>
+      </div>
+
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </div>
+        <div class="pillar-text">
+          <h5>Private Concierge</h5>
+          <p>Personal stylist consultation & 30-day effortless returns</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collections Showcase -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Curated Repertoire</span>
+        <h2 class="section-title">The Seasonal Capsule</h2>
+        <p class="section-desc">Each garment embodies an intentional balance of clean lines, supreme tactile indulgence, and enduring form.</p>
+      </div>
+
+      <div class="collections-grid">
+        <div class="collection-card">
+          <img src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=800&auto=format&fit=crop" alt="Outerwear Capsule" />
+          <div class="collection-card-overlay"></div>
+          <div class="collection-info">
+            <span class="eyebrow" style="color:#C5A880;">Category Repertoire</span>
+            <h3>Sculpted Outerwear</h3>
+            <a href="shop.html" class="collection-link">Discover Coats &amp; Capes &rarr;</a>
+          </div>
+        </div>
+
+        <div class="collection-card">
+          <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800&auto=format&fit=crop" alt="Evening Silk Repertoire" />
+          <div class="collection-card-overlay"></div>
+          <div class="collection-info">
+            <span class="eyebrow" style="color:#C5A880;">Eveningwear</span>
+            <h3>Bias-Cut Mulberry Silk</h3>
+            <a href="shop.html" class="collection-link">View Evening Silhouettes &rarr;</a>
+          </div>
+        </div>
+
+        <div class="collection-card">
+          <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" alt="Leather Atelier Accessories" />
+          <div class="collection-card-overlay"></div>
+          <div class="collection-info">
+            <span class="eyebrow" style="color:#C5A880;">Leather &amp; Jewelry</span>
+            <h3>Tuscan Leather &amp; 18K Vermeil</h3>
+            <a href="shop.html" class="collection-link">Acquire Accessories &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Atelier Creations (Dynamic Product Grid) -->
+  <section class="section-padding" style="background-color: var(--color-sand); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Atelier Spotlight</span>
+        <h2 class="section-title">Iconic Essentials</h2>
+        <p class="section-desc">Favored by private clients across Paris, Milan, New York, and Tokyo.</p>
+      </div>
+
+      <!-- Injected via JavaScript from js/products.js -->
+      <div class="product-grid" id="featuredProductsGrid"></div>
+
+      <div style="text-align: center; margin-top: 3.5rem;">
+        <a href="shop.html" class="btn btn-dark">View Entire Catalogue</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Slow-Fashion Highlight -->
+  <section class="editorial-spotlight">
+    <div class="container editorial-layout">
+      <div class="editorial-imagery">
+        <img 
+          src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=1000&auto=format&fit=crop" 
+          alt="Atelier Craftsmanship" 
+          class="editorial-imagery-main" 
+        />
+        <div class="editorial-imagery-badge">
+          <strong>100%</strong>
+          Traceable European Mills &amp; Certified Organic Fibers
+        </div>
+      </div>
+
+      <div class="editorial-copy">
+        <span class="eyebrow">Our Philosophy</span>
+        <h2>The Art of Slow Fashion &amp; Permanent Elegance</h2>
+        <p>
+          At VELORA, we discard the frantic rhythm of hyper-trend seasons. Every garment is conceived through architectural restraint—designed not merely to be worn, but to become an integral element of your personal identity.
+        </p>
+        <p>
+          We collaborate exclusively with small, family-owned weaving mills in Piedmont, Como, and Lyon whose lineage traces back over a century. From hand-rolled silk hems to floating horsehair canvas lapels, our reverence for pure craft is unmistakable.
+        </p>
+        <div style="margin-top: 2rem;">
+          <a href="about.html" class="btn btn-outline">Read Our Atelier Manifesto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Press Mentions Strip -->
+  <section class="press-strip">
+    <div class="container">
+      <div class="press-title">As Featured In World Publications</div>
+      <div class="press-logos">
+        <span class="press-logo-item">VOGUE</span>
+        <span class="press-logo-item">HARPER’S BAZAAR</span>
+        <span class="press-logo-item">ELLE COUTURE</span>
+        <span class="press-logo-item">GQ STYLE</span>
+        <span class="press-logo-item">L’OFFICIEL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Voices of Distinction</span>
+        <h2 class="section-title">Client Reflections</h2>
+        <p class="section-desc">Unsolicited praise from our global clientele.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-quote">
+              "The Double-Breasted Wool Coat is utterly sublime. The shoulder contour has a structural drape reminiscent of vintage couture, yet feels as weightless as a whisper."
+            </p>
+          </div>
+          <div>
+            <h5 class="test-author">Lady Genevieve V.</h5>
+            <span class="test-location">Geneva, Switzerland</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-quote">
+              "VELORA silk is unmatched. The 22-momme weight falls with liquid gravity without clinging. Your digital concierge service felt as intimate as a private salon in Paris."
+            </p>
+          </div>
+          <div>
+            <h5 class="test-author">Elena Rostova</h5>
+            <span class="test-location">Milan, Italy</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-quote">
+              "Received the Tuscan leather tote in Tokyo in three days. The vegetable-tanned patina is already deepening into an exquisite golden caramel. Extraordinary craft."
+            </p>
+          </div>
+          <div>
+            <h5 class="test-author">Kenji Takahashi</h5>
+            <span class="test-location">Tokyo, Japan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP Privilege Newsletter -->
+  <section class="newsletter-section">
+    <div class="container newsletter-content">
+      <span class="eyebrow" style="color:var(--color-gold);">Private Clientele Club</span>
+      <h2>Receive Priority Atelier Invitations</h2>
+      <p>Subscribe to receive private preview access to limited seasonal capsule releases and private salon trunk shows.</p>
+      
+      <form class="newsletter-form" id="homeNewsletterForm">
+        <input type="email" placeholder="Enter your email address..." required aria-label="Email address" />
+        <button type="submit">Join Circle</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <div class="container footer-top-grid">
+      <div class="footer-brand">
+        <h3>VELORA</h3>
+        <p>Haute Couture &amp; contemporary Prêt-à-Porter. Permanent garments sculpted for the discerning individual.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Instagram">IG</a>
+          <a href="#" class="social-link" aria-label="Pinterest">PI</a>
+          <a href="#" class="social-link" aria-label="LinkedIn">LI</a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h5>Collections</h5>
+        <div class="footer-links">
+          <a href="shop.html">Outerwear</a>
+          <a href="shop.html">Silk Dresses</a>
+          <a href="shop.html">Tailoring</a>
+          <a href="shop.html">Fine Knitwear</a>
+          <a href="shop.html">Handcrafted Leather</a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h5>Atelier</h5>
+        <div class="footer-links">
+          <a href="about.html">Our Heritage</a>
+          <a href="about.html">Sustainability Standards</a>
+          <a href="about.html">Master Artisans</a>
+          <a href="contact.html">Flagship Boutiques</a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h5>Concierge</h5>
+        <div class="footer-links">
+          <a href="contact.html">Client Care</a>
+          <a href="contact.html">Private Styling</a>
+          <a href="contact.html">Shipping &amp; Logistics</a>
+          <a href="contact.html">Returns &amp; Exchanges</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 VELORA Couture Inc. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Manifesto</a>
+        <a href="#">Terms of Acquisition</a>
+        <a href="#">Atelier Security</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       GLOBAL SHARED OVERLAYS, DRAWERS & MODALS
+       ========================================================================= -->
+
+  <!-- Drawer Backdrop Overlay -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Shopping Cart Side Drawer -->
+  <aside class="side-drawer" id="cartDrawer" aria-label="Shopping Bag">
+    <div class="drawer-header">
+      <h3>Your Shopping Bag</h3>
+      <button class="drawer-close-btn" onclick="VeloraCart.closeCartDrawer()" aria-label="Close Shopping Bag">&times;</button>
+    </div>
+
+    <!-- Free Shipping Progress Tracker -->
+    <div class="free-shipping-tracker">
+      <p class="free-shipping-text" id="freeShippingText"></p>
+      <div class="free-shipping-bar-wrap">
+        <div class="free-shipping-bar" id="freeShippingBar"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scroll Area -->
+    <div class="drawer-body" id="cartDrawerItems"></div>
+
+    <!-- Cart Footer with Totals -->
+    <div class="drawer-footer" id="cartDrawerFooter">
+      <!-- Promo Code Form -->
+      <form class="cart-coupon-form" id="cartCouponForm">
+        <input type="text" id="couponInput" placeholder="Privilege Code (e.g. VELORA15)" />
+        <button type="submit">Apply</button>
+      </form>
+
+      <div class="active-coupon-tag" id="activeCouponTag"></div>
+
+      <!-- Financial Breakdown -->
+      <div class="cart-summary-line">
+        <span>Subtotal</span>
+        <span id="cartSubtotalDisplay">$0</span>
+      </div>
+      <div class="cart-summary-line" id="cartDiscountRow" style="display:none; color:var(--color-danger);">
+        <span>Promotional Privilege</span>
+        <span id="cartDiscountDisplay">-$0</span>
+      </div>
+      <div class="cart-summary-line">
+        <span>Insured Courier Delivery</span>
+        <span id="cartShippingDisplay">Complimentary</span>
+      </div>
+      <div class="cart-summary-line cart-summary-total">
+        <span>Total (USD)</span>
+        <span id="cartTotalDisplay">$0</span>
+      </div>
+
+      <button class="btn btn-dark btn-block" id="proceedToCheckoutBtn">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Wishlist Side Drawer -->
+  <aside class="side-drawer" id="wishlistDrawer" aria-label="Saved Wishlist">
+    <div class="drawer-header">
+      <h3>Saved Creations</h3>
+      <button class="drawer-close-btn" onclick="VeloraWishlist.closeWishlistDrawer()" aria-label="Close Wishlist">&times;</button>
+    </div>
+    <div class="drawer-body" id="wishlistDrawerItems"></div>
+  </aside>
+
+  <!-- Global Quick View Modal -->
+  <div class="modal-backdrop" id="quickViewModal">
+    <div class="modal-dialog" id="quickViewDialog"></div>
+  </div>
+
+  <!-- Global Search Modal -->
+  <div class="search-modal-overlay" id="searchModal">
+    <div class="search-modal-box">
+      <div class="search-input-header">
+        <input type="text" id="globalSearchInput" placeholder="Search creations by fabric, silhouette, or name..." autocomplete="off" />
+        <button id="closeSearchModal" style="color:#FFF; font-size:2rem; line-height:1; margin-left:1rem;">&times;</button>
+      </div>
+      <div class="search-results-tray" id="searchResultsTray"></div>
+    </div>
+  </div>
+
+  <!-- Checkout Demo Simulation Modal -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-dialog" style="max-width: 920px;" id="checkoutModalBody">
+      <button class="modal-close-btn" id="closeCheckoutModal">&times;</button>
+      <div class="checkout-modal-layout">
+        <!-- Client Details & Address -->
+        <div class="checkout-form-panel">
+          <span class="eyebrow">Atelier Dispatch</span>
+          <h2 style="font-size:1.6rem; margin-bottom:1.5rem;">Client &amp; Shipping Details</h2>
+          
+          <form id="veloraCheckoutForm">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="checkoutName" required placeholder="Elena" value="Eleanor" />
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" required placeholder="Vance" value="Vance" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Email for Dispatch Notice</label>
+              <input type="email" id="checkoutEmail" required placeholder="client@domain.com" value="eleanor.vance@couture.com" />
+            </div>
+
+            <div class="form-group">
+              <label>Delivery Address</label>
+              <input type="text" required placeholder="Avenue Montaigne, 75008" value="742 Evergreen Terrace, Suite 400" />
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" required value="New York" />
+              </div>
+              <div class="form-group">
+                <label>Country / Region</label>
+                <select required>
+                  <option value="US">United States</option>
+                  <option value="FR">France</option>
+                  <option value="IT">Italy</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="JP">Japan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Payment Method (Demo Simulation)</label>
+              <select>
+                <option>White-Glove Amex Black / Concierge Billing</option>
+                <option>Visa / Mastercard Premium</option>
+                <option>Apple Pay / Digital Wallet</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-block" style="margin-top:1.5rem;">Place Atelier Acquisition</button>
+          </form>
+        </div>
+
+        <!-- Order Summary Column -->
+        <div class="checkout-summary-panel">
+          <h3 style="font-size:1.2rem; margin-bottom:1.2rem;">Acquisition Summary</h3>
+          <div id="checkoutSummaryItems" style="max-height: 240px; overflow-y: auto; margin-bottom: 1.5rem;"></div>
+          <div id="checkoutSummaryTotals"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts (Vanilla JavaScript) -->
+  <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/chatbot.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>
