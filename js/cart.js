@@ -1,6 +1,11 @@
 /**
  * VELORA - Shopping Cart & Wishlist System
  * Pure Vanilla JavaScript with LocalStorage Persistence
+ * 
+ * Includes fixes for:
+ * - Proper color hex storage matching chosen color
+ * - Checkout success view separation (preserving close button & modal reopening)
+ * - HTML escaping for all user inputs in innerHTML
  */
 
 const CART_STORAGE_KEY = "velora_cart_items";
@@ -15,6 +20,17 @@ const PROMO_CODES = {
   VIP20: { discountPercent: 20, label: "20% Off Haute Collection" },
   FREESHIP: { freeShipping: true, label: "Complimentary Worldwide Express" }
 };
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str).replace(/[&<>"']/g, match => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[match]));
+}
 
 const VeloraCart = {
   // Read from localStorage
@@ -39,7 +55,7 @@ const VeloraCart = {
     }
   },
 
-  // Add Item to Cart
+  // Add Item to Cart (Fixed color hex matching chosen color)
   addItem(productId, size, color, quantity = 1) {
     const product = VeloraProducts.getById(productId);
     if (!product) return false;
@@ -47,7 +63,10 @@ const VeloraCart = {
     const items = this.getItems();
     const chosenSize = size || product.sizes[0] || "Standard";
     const chosenColor = color || (product.colors && product.colors[0] ? product.colors[0].name : "Standard");
-    const chosenColorHex = (product.colors && product.colors[0]) ? product.colors[0].hex : "#111111";
+    
+    // Fix: Match exact chosen color's hex rather than always taking index 0
+    const foundColorObj = product.colors && product.colors.find(c => c.name.toLowerCase() === chosenColor.toLowerCase());
+    const chosenColorHex = foundColorObj ? foundColorObj.hex : (product.colors && product.colors[0] ? product.colors[0].hex : "#111111");
 
     const cartItemId = `${productId}-${chosenSize}-${chosenColor}`.replace(/\s+/g, "_");
 
@@ -268,17 +287,17 @@ const VeloraCart = {
 
     container.innerHTML = items.map(item => `
       <div class="cart-item" data-id="${item.cartItemId}">
-        <img src="${item.image}" alt="${item.name}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=300&auto=format&fit=crop'" />
+        <img src="${item.image}" alt="${escapeHTML(item.name)}" class="cart-item-img" onerror="this.src='images/product-placeholder.svg'" />
         <div class="cart-item-details">
           <div class="cart-item-header">
-            <h4 class="cart-item-title">${item.name}</h4>
+            <h4 class="cart-item-title">${escapeHTML(item.name)}</h4>
             <button class="cart-item-remove" onclick="VeloraCart.removeItem('${item.cartItemId}')" aria-label="Remove item">
               &times;
             </button>
           </div>
           <div class="cart-item-meta">
-            <span>Size: ${item.size}</span>
-            <span>Color: ${item.color}</span>
+            <span>Size: ${escapeHTML(item.size)}</span>
+            <span>Color: <span class="color-swatch-dot" style="display:inline-block; vertical-align:middle; background-color:${item.colorHex};"></span> ${escapeHTML(item.color)}</span>
           </div>
           <div class="cart-item-bottom">
             <div class="qty-stepper">
@@ -316,13 +335,25 @@ const VeloraCart = {
     if (couponTag) {
       if (totals.coupon) {
         couponTag.innerHTML = `
-          <span>Applied: <strong>${totals.coupon.code}</strong> (${totals.coupon.label})</span>
-          <button type="button" onclick="VeloraCart.removeCoupon()" title="Remove coupon">&times;</button>
+          <span>Applied: <strong>${escapeHTML(totals.coupon.code)}</strong> (${escapeHTML(totals.coupon.label)})</span>
+          <button type="button" onclick="VeloraCart.removeCoupon()" title="Remove coupon" aria-label="Remove coupon">&times;</button>
         `;
         couponTag.style.display = "flex";
       } else {
         couponTag.style.display = "none";
       }
+    }
+  },
+
+  closeCheckoutModal() {
+    const modal = document.getElementById("checkoutModal");
+    if (modal) {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+      const formView = document.getElementById("checkoutFormView");
+      const successView = document.getElementById("checkoutSuccessView");
+      if (formView) formView.style.display = "grid";
+      if (successView) successView.style.display = "none";
     }
   }
 };
@@ -430,16 +461,16 @@ const VeloraWishlist = {
 
     container.innerHTML = products.map(product => `
       <div class="cart-item wishlist-item" data-id="${product.id}">
-        <img src="${product.image}" alt="${product.name}" class="cart-item-img" />
+        <img src="${product.image}" alt="${escapeHTML(product.name)}" class="cart-item-img" />
         <div class="cart-item-details">
           <div class="cart-item-header">
-            <h4 class="cart-item-title">${product.name}</h4>
+            <h4 class="cart-item-title">${escapeHTML(product.name)}</h4>
             <button class="cart-item-remove" onclick="VeloraWishlist.toggle('${product.id}')" aria-label="Remove from wishlist">
               &times;
             </button>
           </div>
           <div class="cart-item-meta">
-            <span>${product.categoryLabel}</span>
+            <span>${escapeHTML(product.categoryLabel)}</span>
             <span class="wishlist-price">$${product.price}</span>
           </div>
           <div class="wishlist-actions">
@@ -502,6 +533,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       VeloraCart.closeCartDrawer();
       if (checkoutModal) {
+        const formView = document.getElementById("checkoutFormView");
+        const successView = document.getElementById("checkoutSuccessView");
+        if (formView) formView.style.display = "grid";
+        if (successView) successView.style.display = "none";
         renderCheckoutOrderSummary();
         checkoutModal.classList.add("active");
         document.body.style.overflow = "hidden";
@@ -511,8 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (checkoutCloseBtn && checkoutModal) {
     checkoutCloseBtn.addEventListener("click", () => {
-      checkoutModal.classList.remove("active");
-      document.body.style.overflow = "";
+      VeloraCart.closeCheckoutModal();
     });
   }
 
@@ -526,15 +560,22 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.disabled = true;
 
       setTimeout(() => {
-        const name = document.getElementById("checkoutName")?.value || "Distinguished Client";
-        const email = document.getElementById("checkoutEmail")?.value || "";
+        const nameInput = document.getElementById("checkoutName")?.value || "Distinguished Client";
+        const emailInput = document.getElementById("checkoutEmail")?.value || "";
         const orderId = `VEL-${Math.floor(100000 + Math.random() * 900000)}`;
         const totals = VeloraCart.getTotals();
 
-        // Render Order Success in Modal
-        const modalBody = document.getElementById("checkoutModalBody");
-        if (modalBody) {
-          modalBody.innerHTML = `
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+
+        // Render Order Success in Separate View Element (keeps close button & modal structure intact)
+        const formView = document.getElementById("checkoutFormView");
+        const successView = document.getElementById("checkoutSuccessView");
+
+        if (formView && successView) {
+          formView.style.display = "none";
+          successView.style.display = "block";
+          successView.innerHTML = `
             <div class="order-success-screen">
               <div class="success-icon">
                 <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#C5A880" stroke-width="1.8">
@@ -543,16 +584,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 </svg>
               </div>
               <h2>Order Confirmed</h2>
-              <p class="order-subtitle">Thank you, <strong>${name}</strong>. Your bespoke order has been accepted into our atelier.</p>
+              <p class="order-subtitle">Thank you, <strong>${escapeHTML(nameInput)}</strong>. Your bespoke order has been accepted into our atelier.</p>
               
               <div class="order-receipt-card">
                 <div class="receipt-row">
                   <span>Order Reference:</span>
-                  <strong>${orderId}</strong>
+                  <strong>${escapeHTML(orderId)}</strong>
                 </div>
                 <div class="receipt-row">
                   <span>Confirmation Dispatched to:</span>
-                  <strong>${email}</strong>
+                  <strong>${escapeHTML(emailInput)}</strong>
                 </div>
                 <div class="receipt-row">
                   <span>Total Amount Paid:</span>
@@ -565,7 +606,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <div class="order-success-actions">
-                <a href="shop.html" class="btn btn-dark" onclick="location.reload()">Continue Shopping</a>
+                <button type="button" class="btn btn-dark" onclick="VeloraCart.closeCheckoutModal(); window.location.href='shop.html';">Continue Shopping</button>
                 <button type="button" class="btn btn-outline" onclick="window.print()">Print Atelier Invoice</button>
               </div>
             </div>
@@ -576,7 +617,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.showToast) {
           window.showToast(`Order ${orderId} placed successfully!`, "success");
         }
-      }, 1200);
+      }, 1000);
     });
   }
 });
@@ -591,10 +632,10 @@ function renderCheckoutOrderSummary() {
 
   container.innerHTML = items.map(item => `
     <div class="checkout-item-line">
-      <img src="${item.image}" alt="${item.name}" />
+      <img src="${item.image}" alt="${escapeHTML(item.name)}" onerror="this.src='images/product-placeholder.svg'" />
       <div class="checkout-item-text">
-        <h5>${item.name}</h5>
-        <small>Qty: ${item.quantity} | Size: ${item.size}</small>
+        <h5>${escapeHTML(item.name)}</h5>
+        <small>Qty: ${item.quantity} | Size: ${escapeHTML(item.size)}</small>
       </div>
       <div class="checkout-item-price">$${item.price * item.quantity}</div>
     </div>
@@ -606,7 +647,7 @@ function renderCheckoutOrderSummary() {
       <span>$${totals.subtotal}</span>
     </div>
     ${totals.discount > 0 ? `
-      <div class="summary-line discount-text">
+      <div class="summary-line discount-text" style="color:var(--color-danger);">
         <span>Promotional Privilege</span>
         <span>-$${totals.discount}</span>
       </div>
