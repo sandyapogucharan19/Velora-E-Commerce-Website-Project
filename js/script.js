@@ -1,6 +1,12 @@
 /**
  * VELORA - Haute Couture & Prêt-à-Porter
  * Global Client Script & Interactive Controllers (Vanilla JavaScript)
+ * 
+ * Features:
+ * - URL Query parameter category filter auto-activation
+ * - Dynamic / Full size filter coverage from products.js
+ * - Complete HTML escaping for all user and dynamic inputs
+ * - Focus-visible and accessibility improvements
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,6 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
     initFaqAccordion();
   }
 });
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str).replace(/[&<>"']/g, match => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[match]));
+}
 
 /* ==========================================================================
    1. Toast Notification System
@@ -107,8 +124,8 @@ function initOverlayDismiss() {
   if (!overlay) return;
 
   overlay.addEventListener("click", () => {
-    VeloraCart.closeCartDrawer();
-    VeloraWishlist.closeWishlistDrawer();
+    if (window.VeloraCart) window.VeloraCart.closeCartDrawer();
+    if (window.VeloraWishlist) window.VeloraWishlist.closeWishlistDrawer();
     document.getElementById("mobileNavDrawer")?.classList.remove("active");
     overlay.classList.remove("active");
     document.body.style.overflow = "";
@@ -148,9 +165,9 @@ function initQuickViewModal() {
     if (e.key === "Escape") {
       modal.classList.remove("active");
       document.getElementById("searchModal")?.classList.remove("active");
-      document.getElementById("checkoutModal")?.classList.remove("active");
-      VeloraCart.closeCartDrawer();
-      VeloraWishlist.closeWishlistDrawer();
+      if (window.VeloraCart) window.VeloraCart.closeCheckoutModal();
+      if (window.VeloraCart) window.VeloraCart.closeCartDrawer();
+      if (window.VeloraWishlist) window.VeloraWishlist.closeWishlistDrawer();
       document.body.style.overflow = "";
     }
   });
@@ -170,14 +187,14 @@ window.openQuickView = function (productId) {
   if (!modal || !dialog) return;
 
   dialog.innerHTML = `
-    <button class="modal-close-btn" id="closeQuickViewModal" aria-label="Close dialog">&times;</button>
+    <button class="modal-close-btn" id="closeQuickViewModal" aria-label="Close dialog" title="Close dialog">&times;</button>
     <div class="quickview-layout">
       <div class="quickview-media">
-        <img id="qvMainImg" src="${product.image}" alt="${product.name}" class="quickview-main-img" />
+        <img id="qvMainImg" src="${product.image}" alt="${escapeHTML(product.name)}" class="quickview-main-img" onerror="this.src='images/product-placeholder.svg'" />
         ${product.gallery && product.gallery.length > 1 ? `
           <div style="display:flex; gap:0.5rem; overflow-x:auto;">
             ${product.gallery.map(img => `
-              <img src="${img}" style="width:55px; height:70px; object-fit:cover; cursor:pointer; border:1px solid #CCC;" onclick="document.getElementById('qvMainImg').src='${img}'" />
+              <img src="${img}" alt="${escapeHTML(product.name)} angle" style="width:55px; height:70px; object-fit:cover; cursor:pointer; border:1px solid var(--color-border);" onclick="document.getElementById('qvMainImg').src='${img}'" />
             `).join("")}
           </div>
         ` : ''}
@@ -185,8 +202,8 @@ window.openQuickView = function (productId) {
 
       <div class="quickview-details">
         <div>
-          <span class="eyebrow">${product.categoryLabel}</span>
-          <h2 class="quickview-title">${product.name}</h2>
+          <span class="eyebrow">${escapeHTML(product.categoryLabel)}</span>
+          <h2 class="quickview-title">${escapeHTML(product.name)}</h2>
           <div class="quickview-price-row">
             <span class="price">$${product.price}</span>
             ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
@@ -194,15 +211,15 @@ window.openQuickView = function (productId) {
               ★ ${product.rating} (${product.reviewCount} client reviews)
             </span>
           </div>
-          <p class="quickview-desc">${product.description}</p>
+          <p class="quickview-desc">${escapeHTML(product.description)}</p>
 
           <!-- Colors -->
           ${product.colors && product.colors.length > 0 ? `
             <div class="option-selector-group">
-              <span class="option-label">Atelier Palette: <strong id="qvColorName">${selectedQuickViewColor}</strong></span>
+              <span class="option-label">Atelier Palette: <strong id="qvColorName">${escapeHTML(selectedQuickViewColor)}</strong></span>
               <div class="swatch-picker">
                 ${product.colors.map((c, idx) => `
-                  <button type="button" class="swatch-circle ${idx === 0 ? 'active' : ''}" style="background-color:${c.hex};" title="${c.name}" onclick="selectQvColor('${c.name}', this)"></button>
+                  <button type="button" class="swatch-circle ${idx === 0 ? 'active' : ''}" style="background-color:${c.hex};" title="${escapeHTML(c.name)}" aria-label="${escapeHTML(c.name)}" onclick="selectQvColor('${escapeHTML(c.name)}', this)"></button>
                 `).join("")}
               </div>
             </div>
@@ -213,7 +230,7 @@ window.openQuickView = function (productId) {
             <span class="option-label">Select Proportion:</span>
             <div class="size-pill-grid">
               ${product.sizes.map((s, idx) => `
-                <button type="button" class="size-pill ${idx === 0 ? 'active' : ''}" onclick="selectQvSize('${s}', this)">${s}</button>
+                <button type="button" class="size-pill ${idx === 0 ? 'active' : ''}" onclick="selectQvSize('${escapeHTML(s)}', this)">${escapeHTML(s)}</button>
               `).join("")}
             </div>
           </div>
@@ -222,9 +239,9 @@ window.openQuickView = function (productId) {
           <div class="option-selector-group" style="display:flex; align-items:center; gap:1rem;">
             <span class="option-label" style="margin-bottom:0;">Quantity:</span>
             <div class="qty-stepper">
-              <button onclick="updateQvQty(-1)">&minus;</button>
+              <button onclick="updateQvQty(-1)" aria-label="Decrease quantity">&minus;</button>
               <span id="qvQtyDisplay">1</span>
-              <button onclick="updateQvQty(1)">&#43;</button>
+              <button onclick="updateQvQty(1)" aria-label="Increase quantity">&#43;</button>
             </div>
           </div>
         </div>
@@ -239,7 +256,6 @@ window.openQuickView = function (productId) {
     </div>
   `;
 
-  // Re-bind close button inside
   document.getElementById("closeQuickViewModal").addEventListener("click", () => {
     modal.classList.remove("active");
     document.body.style.overflow = "";
@@ -341,15 +357,15 @@ function initSearchModal() {
     }
 
     tray.innerHTML = filtered.map(p => `
-      <div class="product-card" style="background:#FFF; padding:0.8rem;">
+      <div class="product-card" style="padding:0.8rem;">
         <div class="product-media-wrap" style="aspect-ratio:3/4; margin-bottom:0.5rem;">
-          <img src="${p.image}" alt="${p.name}" />
+          <img src="${p.image}" alt="${escapeHTML(p.name)}" onerror="this.src='images/product-placeholder.svg'" />
         </div>
         <div class="product-info">
-          <span class="product-category-tag">${p.categoryLabel}</span>
-          <h4 class="product-name" style="font-size:0.95rem;">${p.name}</h4>
+          <span class="product-category-tag">${escapeHTML(p.categoryLabel)}</span>
+          <h4 class="product-name" style="font-size:0.95rem;">${escapeHTML(p.name)}</h4>
           <span class="price" style="font-weight:600; font-size:0.9rem;">$${p.price}</span>
-          <button class="btn btn-dark btn-sm" style="margin-top:0.5rem;" onclick="openQuickView('${p.id}'); closeSearch();">Quick View</button>
+          <button class="btn btn-dark btn-sm" style="margin-top:0.5rem;" onclick="openQuickView('${p.id}'); document.getElementById('searchModal')?.classList.remove('active'); document.body.style.overflow='';">Quick View</button>
         </div>
       </div>
     `).join("");
@@ -375,7 +391,7 @@ function initHomePage() {
       e.preventDefault();
       const emailInput = newsletterForm.querySelector("input[type='email']");
       if (emailInput && emailInput.value) {
-        showToast(`Privilege Pass granted to ${emailInput.value}! Code VELORA15 ready for use.`, "success");
+        showToast(`Privilege Pass granted to ${escapeHTML(emailInput.value)}! Code VELORA15 ready for use.`, "success");
         emailInput.value = "";
       }
     });
@@ -394,6 +410,7 @@ function initShopPage() {
   const sortSelect = document.getElementById("shopSortSelect");
   const inStockCheckbox = document.getElementById("inStockOnlyCheckbox");
   const clearBtn = document.getElementById("clearFiltersBtn");
+  const sizePillsContainer = document.getElementById("shopSizePillsContainer");
 
   if (!container) return;
 
@@ -406,6 +423,55 @@ function initShopPage() {
     search: "",
     sortBy: "featured"
   };
+
+  // URL Query Parameter Handling: Check for ?category=xxx
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get("category");
+  if (categoryParam) {
+    currentFilters.category = categoryParam.toLowerCase();
+    const matchingRadio = document.querySelector(`input[name="shopCategory"][value="${currentFilters.category}"]`);
+    if (matchingRadio) {
+      matchingRadio.checked = true;
+    }
+  }
+
+  // Populate all sizes from products.js (covers XS, S, M, L, XL, One Size, 36-41, 38R-44R, 90x90cm)
+  function setupSizePills() {
+    if (!sizePillsContainer) return;
+    
+    // Extract unique sizes from entire catalogue
+    const allSizesSet = new Set();
+    VeloraProducts.getAll().forEach(p => {
+      if (Array.isArray(p.sizes)) {
+        p.sizes.forEach(s => allSizesSet.add(s));
+      }
+    });
+
+    const sortedSizes = Array.from(allSizesSet);
+    sizePillsContainer.innerHTML = sortedSizes.map(size => `
+      <button type="button" class="size-pill shop-size-pill" data-size="${escapeHTML(size)}">${escapeHTML(size)}</button>
+    `).join("");
+
+    bindSizePills();
+  }
+
+  function bindSizePills() {
+    const sizePills = document.querySelectorAll(".shop-size-pill");
+    sizePills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        const size = pill.getAttribute("data-size");
+        if (currentFilters.size === size) {
+          currentFilters.size = null;
+          pill.classList.remove("active");
+        } else {
+          sizePills.forEach(p => p.classList.remove("active"));
+          currentFilters.size = size;
+          pill.classList.add("active");
+        }
+        applyFiltersAndRender();
+      });
+    });
+  }
 
   function applyFiltersAndRender() {
     const products = VeloraProducts.filter(currentFilters);
@@ -450,23 +516,6 @@ function initShopPage() {
     });
   }
 
-  // Size pill buttons
-  const sizePills = document.querySelectorAll(".shop-size-pill");
-  sizePills.forEach(pill => {
-    pill.addEventListener("click", () => {
-      const size = pill.getAttribute("data-size");
-      if (currentFilters.size === size) {
-        currentFilters.size = null;
-        pill.classList.remove("active");
-      } else {
-        sizePills.forEach(p => p.classList.remove("active"));
-        currentFilters.size = size;
-        pill.classList.add("active");
-      }
-      applyFiltersAndRender();
-    });
-  });
-
   // In Stock Checkbox
   if (inStockCheckbox) {
     inStockCheckbox.addEventListener("change", (e) => {
@@ -503,7 +552,6 @@ function initShopPage() {
         sortBy: "featured"
       };
 
-      // Reset inputs in DOM
       const allCat = document.getElementById("catAll");
       if (allCat) allCat.checked = true;
 
@@ -512,18 +560,23 @@ function initShopPage() {
         if (maxPriceDisplay) maxPriceDisplay.textContent = "$1200";
       }
 
-      sizePills.forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".shop-size-pill").forEach(p => p.classList.remove("active"));
 
       if (inStockCheckbox) inStockCheckbox.checked = false;
       if (searchInput) searchInput.value = "";
       if (sortSelect) sortSelect.value = "featured";
+
+      // Clear query string in browser without reload
+      if (window.history.replaceState) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
 
       applyFiltersAndRender();
       showToast("Filters reset to default view.", "info");
     });
   }
 
-  // Initial render
+  setupSizePills();
   applyFiltersAndRender();
 }
 
@@ -544,19 +597,17 @@ function initContactPage() {
     const subject = document.getElementById("contactSubject")?.value.trim();
     const message = document.getElementById("contactMessage")?.value.trim();
 
-    // Clear previous errors
     if (msgBox) {
       msgBox.className = "contact-form-message";
       msgBox.textContent = "";
     }
 
-    // Validation rules
     if (!name || name.length < 2) {
       showError("Please enter your full name (at least 2 characters).");
       return;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailPattern.test(email)) {
       showError("Please enter a valid email address.");
       return;
@@ -572,7 +623,6 @@ function initContactPage() {
       return;
     }
 
-    // Submit Simulation
     const submitBtn = form.querySelector("button[type='submit']");
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = "<span>Transmitting to Atelier...</span>";
@@ -584,12 +634,12 @@ function initContactPage() {
 
       if (msgBox) {
         msgBox.className = "contact-form-message success";
-        msgBox.innerHTML = `<strong>Inquiry Received.</strong> Dear ${name}, your bespoke request has been assigned to our senior client stylist. You will receive a personal response at <strong>${email}</strong> within 12 hours.`;
+        msgBox.innerHTML = `<strong>Inquiry Received.</strong> Dear ${escapeHTML(name)}, your request has been assigned to our senior styling desk. You will receive a personal response at <strong>${escapeHTML(email)}</strong> within 12 hours.`;
       }
 
       form.reset();
       showToast("Client inquiry dispatched successfully.", "success");
-    }, 1200);
+    }, 1000);
   });
 
   function showError(text) {
@@ -613,10 +663,7 @@ function initFaqAccordion() {
 
     trigger.addEventListener("click", () => {
       const isOpen = item.classList.contains("active");
-
-      // Close all other accordions for sleek exclusive feel
       items.forEach(i => i.classList.remove("active"));
-
       if (!isOpen) {
         item.classList.add("active");
       }
@@ -633,14 +680,15 @@ function createProductCardHTML(product) {
   return `
     <div class="product-card" data-product-id="${product.id}">
       <div class="product-media-wrap">
-        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+        ${product.badge ? `<span class="product-badge">${escapeHTML(product.badge)}</span>` : ''}
         
         <button 
           type="button" 
           class="btn-wishlist-toggle ${isWishlisted ? 'active' : ''}" 
           data-product-id="${product.id}"
           onclick="VeloraWishlist.toggle('${product.id}')"
-          aria-label="Save to Wishlist"
+          aria-label="Save ${escapeHTML(product.name)} to Wishlist"
+          title="Save to Wishlist"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -649,9 +697,9 @@ function createProductCardHTML(product) {
 
         <img 
           src="${product.image}" 
-          alt="${product.name}" 
+          alt="${escapeHTML(product.name)}" 
           loading="lazy" 
-          onerror="this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop'"
+          onerror="this.src='images/product-placeholder.svg'"
         />
 
         <div class="product-actions-hover">
@@ -665,9 +713,9 @@ function createProductCardHTML(product) {
       </div>
 
       <div class="product-info">
-        <span class="product-category-tag">${product.categoryLabel}</span>
+        <span class="product-category-tag">${escapeHTML(product.categoryLabel)}</span>
         <h4 class="product-name">
-          <a href="javascript:void(0)" onclick="openQuickView('${product.id}')">${product.name}</a>
+          <a href="javascript:void(0)" onclick="openQuickView('${product.id}')">${escapeHTML(product.name)}</a>
         </h4>
         <div class="product-price-row">
           <span class="price">$${product.price}</span>
@@ -677,7 +725,7 @@ function createProductCardHTML(product) {
         ${product.colors && product.colors.length > 0 ? `
           <div class="product-swatches">
             ${product.colors.map(c => `
-              <span class="color-swatch-dot" style="background-color:${c.hex};" title="${c.name}"></span>
+              <span class="color-swatch-dot" style="background-color:${c.hex};" title="${escapeHTML(c.name)}"></span>
             `).join("")}
           </div>
         ` : ''}

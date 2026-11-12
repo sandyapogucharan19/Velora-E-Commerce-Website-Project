@@ -472,3 +472,13 @@ const VeloraProducts = {
     return result;
   }
 };
+
+// Global export for vanilla scripts & testing environments
+if (typeof window !== "undefined") {
+  window.VELORA_PRODUCTS = VELORA_PRODUCTS;
+  window.VeloraProducts = VeloraProducts;
+}
+if (typeof global !== "undefined") {
+  global.VELORA_PRODUCTS = VELORA_PRODUCTS;
+  global.VeloraProducts = VeloraProducts;
+}
